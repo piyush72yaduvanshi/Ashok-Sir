@@ -1,0 +1,130 @@
+{
+	"name": "🔐 Authentication",
+	"item": [
+		{
+			"name": "Super Admin Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.success && response.user) {",
+							"        pm.collectionVariables.set('superAdminToken', 'logged_in');",
+							"        pm.collectionVariables.set('userId', response.user.id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"admin@ncbbilling.com\",\n    \"password\": \"admin123\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/login",
+					"host": ["{{baseUrl}}"],
+					"path": ["auth", "login"]
+				}
+			}
+		},
+		{
+			"name": "Generate OTP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mobileNo\": \"9999999999\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/generate-otp",
+					"host": ["{{baseUrl}}"],
+					"path": ["auth", "generate-otp"]
+				}
+			}
+		},
+		{
+			"name": "Verify OTP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mobileNo\": \"9999999999\",\n    \"otp\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/verify-otp",
+					"host": ["{{baseUrl}}"],
+					"path": ["auth", "verify-otp"]
+				}
+			}
+		},
+		{
+			"name": "Get Profile",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/auth/profile",
+					"host": ["{{baseUrl}}"],
+					"path": ["auth", "profile"]
+				}
+			}
+		},
+		{
+			"name": "Create Franchise User (Super Admin)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@franchise.com\",\n    \"mobileNo\": \"9876543210\",\n    \"franchiseId\": \"{{franchiseId}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/create-franchise-user",
+					"host": ["{{baseUrl}}"],
+					"path": ["auth", "create-franchise-user"]
+				}
+			}
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/auth/logout",
+					"host": ["{{baseUrl}}"],
+					"path": ["auth", "logout"]
+				}
+			}
+		}
+	]
+}

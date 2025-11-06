@@ -1,0 +1,555 @@
+{
+  "info": {
+    "name": "NCB Billing API",
+    "description": "Complete API collection for NCB Billing System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "ncb-billing-api-v1",
+    "version": "1.0.0"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "API Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": [""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}    
+,
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"mobileNo\": \"9876543210\",\n  \"role\": \"SUPER_ADMIN\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"]}
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["var jsonData = pm.response.json();", "if (jsonData.token) {", "  pm.collectionVariables.set('authToken', jsonData.token);", "}"],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"]}
+          }
+        },
+        {
+          "name": "Generate OTP",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobileNo\": \"9876543210\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/auth/generate-otp", "host": ["{{baseUrl}}"], "path": ["auth", "generate-otp"]}
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"mobileNo\": \"9876543210\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/auth/verify-otp", "host": ["{{baseUrl}}"], "path": ["auth", "verify-otp"]}
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/auth/profile", "host": ["{{baseUrl}}"], "path": ["auth", "profile"]}
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"]}
+          }
+        },
+        {
+          "name": "Create Franchise User (Super Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Franchise Admin\",\n  \"email\": \"franchise@example.com\",\n  \"mobileNo\": \"9123456789\",\n  \"franchiseId\": \"franchise_id_here\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/auth/create-franchise-user", "host": ["{{baseUrl}}"], "path": ["auth", "create-franchise-user"]}
+          }
+        }
+      ]
+    }    
+,
+    {
+      "name": "Franchises",
+      "item": [
+        {
+          "name": "Create Franchise (Super Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"businessName\": \"NCB Delhi Branch\",\n  \"ownerName\": \"Rajesh Kumar\",\n  \"email\": \"delhi@ncb.com\",\n  \"phone\": \"9876543210\",\n  \"address\": \"123 Main Street, Connaught Place\",\n  \"city\": \"New Delhi\",\n  \"state\": \"Delhi\",\n  \"pincode\": \"110001\",\n  \"gstNumber\": \"07AAAAA0000A1Z5\",\n  \"panNumber\": \"AAAAA0000A\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/franchises", "host": ["{{baseUrl}}"], "path": ["franchises"]}
+          }
+        },
+        {
+          "name": "Get All Franchises (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/franchises", "host": ["{{baseUrl}}"], "path": ["franchises"]}
+          }
+        },
+        {
+          "name": "Get Franchise By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/franchises/:id", "host": ["{{baseUrl}}"], "path": ["franchises", ":id"], "variable": [{"key": "id", "value": "franchise_id_here"}]}
+          }
+        },
+        {
+          "name": "Update Franchise (Super Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"businessName\": \"NCB Delhi Branch Updated\",\n  \"phone\": \"9876543211\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/franchises/:id", "host": ["{{baseUrl}}"], "path": ["franchises", ":id"], "variable": [{"key": "id", "value": "franchise_id_here"}]}
+          }
+        },
+        {
+          "name": "Delete Franchise (Super Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/franchises/:id", "host": ["{{baseUrl}}"], "path": ["franchises", ":id"], "variable": [{"key": "id", "value": "franchise_id_here"}]}
+          }
+        },
+        {
+          "name": "Suspend Franchise (Super Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/franchises/:id/suspend", "host": ["{{baseUrl}}"], "path": ["franchises", ":id", "suspend"], "variable": [{"key": "id", "value": "franchise_id_here"}]}
+          }
+        },
+        {
+          "name": "Reactivate Franchise (Super Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/franchises/:id/reactivate", "host": ["{{baseUrl}}"], "path": ["franchises", ":id", "reactivate"], "variable": [{"key": "id", "value": "franchise_id_here"}]}
+          }
+        },
+        {
+          "name": "Send Activation OTP (Super Admin)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/franchises/:id/send-otp", "host": ["{{baseUrl}}"], "path": ["franchises", ":id", "send-otp"], "variable": [{"key": "id", "value": "franchise_id_here"}]}
+          }
+        },
+        {
+          "name": "Get My Franchise (Franchise Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/franchises/my/profile", "host": ["{{baseUrl}}"], "path": ["franchises", "my", "profile"]}
+          }
+        },
+        {
+          "name": "Update My Franchise (Franchise Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"9876543212\",\n  \"address\": \"Updated Address\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/franchises/my/profile", "host": ["{{baseUrl}}"], "path": ["franchises", "my", "profile"]}
+          }
+        }
+      ]
+    }    
+,
+    {
+      "name": "Foods",
+      "item": [
+        {
+          "name": "Create Food",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Paneer Tikka\",\n  \"description\": \"Delicious grilled paneer with spices\",\n  \"category\": \"STARTERS\",\n  \"price\": 250,\n  \"isUniversal\": false,\n  \"preparationTime\": 15,\n  \"isAvailable\": true\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/foods", "host": ["{{baseUrl}}"], "path": ["foods"]}
+          }
+        },
+        {
+          "name": "Get All Foods",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/foods", "host": ["{{baseUrl}}"], "path": ["foods"]}
+          }
+        },
+        {
+          "name": "Get Food Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/foods/categories", "host": ["{{baseUrl}}"], "path": ["foods", "categories"]}
+          }
+        },
+        {
+          "name": "Update Food",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Paneer Tikka Special\",\n  \"price\": 280,\n  \"isAvailable\": true\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/foods/:id", "host": ["{{baseUrl}}"], "path": ["foods", ":id"], "variable": [{"key": "id", "value": "food_id_here"}]}
+          }
+        },
+        {
+          "name": "Delete Food",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/foods/:id", "host": ["{{baseUrl}}"], "path": ["foods", ":id"], "variable": [{"key": "id", "value": "food_id_here"}]}
+          }
+        },
+        {
+          "name": "Toggle Global Availability (Super Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/foods/:id/global-availability", "host": ["{{baseUrl}}"], "path": ["foods", ":id", "global-availability"], "variable": [{"key": "id", "value": "food_id_here"}]}
+          }
+        }
+      ]
+    }    ,
+   
+ {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"foodId\": \"food_id_here\",\n      \"quantity\": 2,\n      \"specialInstructions\": \"Less spicy\"\n    }\n  ],\n  \"orderType\": \"DINE_IN\",\n  \"discount\": 0,\n  \"customerName\": \"John Doe\",\n  \"tableNumber\": \"T5\",\n  \"notes\": \"Customer prefers quick service\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/orders", "host": ["{{baseUrl}}"], "path": ["orders"]}
+          }
+        },
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/orders", "host": ["{{baseUrl}}"], "path": ["orders"]}
+          }
+        },
+        {
+          "name": "Get Order Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/orders/stats", "host": ["{{baseUrl}}"], "path": ["orders", "stats"]}
+          }
+        },
+        {
+          "name": "Get Order By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/orders/:id", "host": ["{{baseUrl}}"], "path": ["orders", ":id"], "variable": [{"key": "id", "value": "order_id_here"}]}
+          }
+        },
+        {
+          "name": "Update Order",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"foodId\": \"food_id_here\",\n      \"quantity\": 3\n    }\n  ],\n  \"discount\": 10\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/orders/:id", "host": ["{{baseUrl}}"], "path": ["orders", ":id"], "variable": [{"key": "id", "value": "order_id_here"}]}
+          }
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/orders/:id", "host": ["{{baseUrl}}"], "path": ["orders", ":id"], "variable": [{"key": "id", "value": "order_id_here"}]}
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"COMPLETED\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/orders/:id/status", "host": ["{{baseUrl}}"], "path": ["orders", ":id", "status"], "variable": [{"key": "id", "value": "order_id_here"}]}
+          }
+        }
+      ]
+    }    
+,
+    {
+      "name": "Bills",
+      "item": [
+        {
+          "name": "Create Bill",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"order_id_here\",\n  \"paymentMethod\": \"CASH\",\n  \"paidAmount\": 500,\n  \"customerDetails\": {\n    \"name\": \"John Doe\",\n    \"phone\": \"9876543210\",\n    \"email\": \"john@example.com\"\n  }\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/bills", "host": ["{{baseUrl}}"], "path": ["bills"]}
+          }
+        },
+        {
+          "name": "Get All Bills",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/bills", "host": ["{{baseUrl}}"], "path": ["bills"]}
+          }
+        },
+        {
+          "name": "Get Bill Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/bills/stats", "host": ["{{baseUrl}}"], "path": ["bills", "stats"]}
+          }
+        },
+        {
+          "name": "Get Bill By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/bills/:id", "host": ["{{baseUrl}}"], "path": ["bills", ":id"], "variable": [{"key": "id", "value": "bill_id_here"}]}
+          }
+        },
+        {
+          "name": "Generate Bill PDF",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/bills/:id/pdf", "host": ["{{baseUrl}}"], "path": ["bills", ":id", "pdf"], "variable": [{"key": "id", "value": "bill_id_here"}]}
+          }
+        },
+        {
+          "name": "Print Bill",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/bills/:id/print", "host": ["{{baseUrl}}"], "path": ["bills", ":id", "print"], "variable": [{"key": "id", "value": "bill_id_here"}]}
+          }
+        }
+      ]
+    }    ,
+ 
+   {
+      "name": "Expenses",
+      "item": [
+        {
+          "name": "Create Expense",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Utilities\",\n  \"amount\": 5000,\n  \"description\": \"Monthly electricity bill payment\",\n  \"expenseDate\": \"2025-10-27T00:00:00.000Z\",\n  \"receiptUrl\": \"https://example.com/receipt.pdf\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/expenses", "host": ["{{baseUrl}}"], "path": ["expenses"]}
+          }
+        },
+        {
+          "name": "Get All Expenses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/expenses", "host": ["{{baseUrl}}"], "path": ["expenses"]}
+          }
+        },
+        {
+          "name": "Get Expense Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/expenses/stats", "host": ["{{baseUrl}}"], "path": ["expenses", "stats"]}
+          }
+        },
+        {
+          "name": "Get Expense By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/expenses/:id", "host": ["{{baseUrl}}"], "path": ["expenses", ":id"], "variable": [{"key": "id", "value": "expense_id_here"}]}
+          }
+        },
+        {
+          "name": "Update Expense",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"Utilities\",\n  \"amount\": 5500,\n  \"description\": \"Updated electricity bill payment\"\n}"
+            },
+            "url": {"raw": "{{baseUrl}}/expenses/:id", "host": ["{{baseUrl}}"], "path": ["expenses", ":id"], "variable": [{"key": "id", "value": "expense_id_here"}]}
+          }
+        },
+        {
+          "name": "Delete Expense",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/expenses/:id", "host": ["{{baseUrl}}"], "path": ["expenses", ":id"], "variable": [{"key": "id", "value": "expense_id_here"}]}
+          }
+        }
+      ]
+    } 
+   ,
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get All Franchises Analytics (Super Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/all-franchises?startDate=2025-10-01&endDate=2025-10-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "all-franchises"],
+              "query": [
+                {"key": "startDate", "value": "2025-10-01"},
+                {"key": "endDate", "value": "2025-10-31"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Revenue Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/revenue-report?startDate=2025-10-01&endDate=2025-10-31&groupBy=day",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "revenue-report"],
+              "query": [
+                {"key": "startDate", "value": "2025-10-01"},
+                {"key": "endDate", "value": "2025-10-31"},
+                {"key": "groupBy", "value": "day"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Franchise Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/:franchiseId?startDate=2025-10-01&endDate=2025-10-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", ":franchiseId"],
+              "query": [
+                {"key": "startDate", "value": "2025-10-01"},
+                {"key": "endDate", "value": "2025-10-31"}
+              ],
+              "variable": [{"key": "franchiseId", "value": "franchise_id_here"}]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
