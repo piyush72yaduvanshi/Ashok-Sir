@@ -19,13 +19,13 @@ router
 
 router
   .route("/update-food/:id")
-  .put(authenticate, authorize("SUPER_ADMIN", "FRANCHISE_ADMIN"), updateFood);
+  .put(authenticate, authorize("SUPER_ADMIN"), updateFood);
 
 router
   .route("/delete-food/:id")
   .delete(
     authenticate,
-    authorize("SUPER_ADMIN", "FRANCHISE_ADMIN"),
+    authorize("SUPER_ADMIN"),
     deleteFood
   );
   router.route("/toggle-food-availability/:id").put(authenticate, authorize("SUPER_ADMIN", "FRANCHISE_ADMIN"), toggleFoodAvailability);

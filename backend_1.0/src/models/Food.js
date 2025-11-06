@@ -20,15 +20,6 @@ const foodSchema = new mongoose.Schema({
         required: true,
         min: 0
       },
-      franchiseId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Franchise',
-        default: null
-      },
-      isUniversal: {
-        type: Boolean,
-        default: true
-      },
       image: {
         type: String,
         default: null
@@ -48,8 +39,6 @@ const foodSchema = new mongoose.Schema({
 
 foodSchema.index({ name: 1 });
 foodSchema.index({ category: 1 });
-foodSchema.index({ franchiseId: 1 });
-foodSchema.index({ isUniversal: 1 });
 foodSchema.index({ isAvailable: 1 });
 
 const Food = mongoose.model('Food', foodSchema);
