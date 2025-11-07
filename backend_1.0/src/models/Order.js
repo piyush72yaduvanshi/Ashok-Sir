@@ -1,111 +1,97 @@
 import mongoose from "mongoose";
 
-const orderItemSchema = new mongoose.Schema({
-  foodId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Food',
-    required: true
+const orderItemSchema = new mongoose.Schema(
+  {
+    foodId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Food",
+      required: true,
+    },
+    foodName: {
+      type: String,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    subtotal: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    specialInstructions: {
+      type: String,
+      default: null,
+    },
   },
-  foodName: {
-    type: String,
-    required: true
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    min: 1
-  },
-  price: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  subtotal: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  specialInstructions: {
-    type: String,
-    default: null
-  }
-}, {
-  timestamps: true
-});
+  { timestamps: true }
+);
 
-const orderSchema = new mongoose.Schema({
-  orderNumber: {
-    type: String,
-    required: true,
-    unique: true
+const orderBillSchema = new mongoose.Schema(
+  {
+    billNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    orderType: {
+      type: String,
+      enum: ["DINE_IN", "TAKEAWAY"],
+      default: "DINE_IN",
+    },
+    subtotal: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    discount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+    totalAmount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["CASH", "ONLINE"],
+      required: true,
+    },
+    customerDetails: {
+      name: {
+        type: String,
+        required: true,
+      },
+      phone: {
+        type: String,
+        default: null,
+      },
+    },
+    paidAt: {
+      type: Date,
+      default: Date.now,
+    },
+    generatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    items: [orderItemSchema],
   },
-  franchiseId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Franchise',
-    required: true
-  },
-  orderType: {
-    type: String,
-    enum: ['DINE_IN', 'TAKEAWAY'],
-    default: 'DINE_IN'
-  },
-  subtotal: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  discount: {
-    type: Number,
-    default: 0,
-    min: 0
-  },
-  totalAmount: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  paymentMethod: {
-    type: String,
-    enum: ['CASH', 'ONLINE'],
-    default: null
-  },
-  paymentStatus: {
-    type: String,
-    enum: ['PENDING', 'PAID'],
-    default: 'PAID'
-  },
-  status: {
-    type: String,
-    enum: ['PENDING', 'COMPLETED'],
-    default: 'COMPLETED'
-  },
-  customerName: {
-    type: String,
-    default: null
-  },
-  notes: {
-    type: String,
-    default: null
-  },
-  completedAt: {
-    type: Date,
-    default: null
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  items: [orderItemSchema]
-}, {
-  timestamps: true
-});
+  { timestamps: true }
+);
 
+orderBillSchema.index({ billNumber: 1 });
+orderBillSchema.index({ paidAt: -1 });
 
-orderSchema.index({ franchiseId: 1 });
-orderSchema.index({ status: 1 });
-orderSchema.index({ paymentStatus: 1 });
-orderSchema.index({ createdAt: -1 });
-
-const Order = mongoose.model('Order', orderSchema);
-export default Order;
+const OrderBill = mongoose.model("OrderBill", orderBillSchema);
+export default OrderBill;
