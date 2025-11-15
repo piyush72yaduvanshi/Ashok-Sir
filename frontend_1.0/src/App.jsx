@@ -8,33 +8,31 @@ import ProfilePage from "./pages/ProfilePage";
 import FoodBillingPOS from "./pages/FooodPage";
 import BillManagementPage from "./pages/ViewBill";
 import DragUpload from "./config/Upload";
+import DashboardPage from "./pages/DashboardPage";
+import CreateFoodPage from "./pages/CreateFoodPage";
+import SignUpPage from "./pages/SignUpPage";
+import VerificationPage from "./pages/Verification";
+import AnalyticsPage from "./pages/AnalyticsPage";
 
-const Dashboard = () => (
-  <div className="h-screen flex items-center justify-center text-3xl font-bold text-indigo-600">
-    🎉 Welcome to Dashboard!
-  </div>
-);
-const VerifyPage = () => (
-  <div className="h-screen flex items-center justify-center text-2xl font-semibold text-green-600">
-    ✅ Verification Page — Coming Soon
-  </div>
-);
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <BrowserRouter>
-    <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Routes>
-        <Route path="/upload" element={<DragUpload />} />
-        <Route path="/bill" element={<BillManagementPage />} />
-        <Route path="/food" element={<FoodBillingPOS />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/create-franchise" element={<FranchiseRegister />} />
-        <Route path="/verify" element={<VerifyPage />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/verify" element={<VerificationPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/create-franchise" element={<FranchiseRegister />} />
+        <Route path="/food" element={<FoodBillingPOS />} />
+        <Route path="/create-food" element={<CreateFoodPage />} />
+        <Route path="/bill" element={<BillManagementPage />} />
+        <Route path="/upload" element={<DragUpload />} />
       </Routes>
     </BrowserRouter>
   );

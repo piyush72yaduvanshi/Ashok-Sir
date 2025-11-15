@@ -1,0 +1,639 @@
+{
+  "info": {
+    "name": "Analytics API - Complete Collection",
+    "description": "Complete Postman collection for Analytics API with role-based access control (FRANCHISE_ADMIN & SUPER_ADMIN). Includes daily, 7-day, monthly, and yearly trends.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "analytics-api-v1"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login - Franchise Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.token) {",
+                  "        pm.collectionVariables.set('authToken', response.token);",
+                  "        console.log('Token saved:', response.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"franchise@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "description": "Login as FRANCHISE_ADMIN to test franchise-specific analytics"
+          },
+          "response": []
+        },
+        {
+          "name": "Login - Super Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.token) {",
+                  "        pm.collectionVariables.set('authToken', response.token);",
+                  "        console.log('Token saved:', response.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "login"]
+            },
+            "description": "Login as SUPER_ADMIN to test all analytics across franchises"
+          },
+          "response": []
+        }
+      ],
+      "description": "Authentication endpoints to get JWT token"
+    },
+    {
+      "name": "Analytics - Main",
+      "item": [
+        {
+          "name": "Get Analytics - Today",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics?period=today",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "today",
+                  "description": "Get today's analytics"
+                }
+              ]
+            },
+            "description": "Get comprehensive analytics for today with trends"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Analytics - 7 Days",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics?period=7days",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7days",
+                  "description": "Get last 7 days analytics with daily trends"
+                }
+              ]
+            },
+            "description": "Get analytics for last 7 days with daily breakdown"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Analytics - Monthly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics?period=monthly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly",
+                  "description": "Get current month analytics with daily trends"
+                }
+              ]
+            },
+            "description": "Get analytics for current month with daily breakdown"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Analytics - Yearly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics?period=yearly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "yearly",
+                  "description": "Get current year analytics with monthly trends"
+                }
+              ]
+            },
+            "description": "Get analytics for current year with monthly breakdown"
+          },
+          "response": []
+        }
+      ],
+      "description": "Main analytics endpoint with comprehensive data and trends"
+    },
+    {
+      "name": "Dashboard Summary",
+      "item": [
+        {
+          "name": "Dashboard - Today",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/dashboard?period=today",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "dashboard"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "today",
+                  "description": "Today's dashboard summary"
+                }
+              ]
+            },
+            "description": "Get dashboard summary for today with quick stats and recent orders"
+          },
+          "response": []
+        },
+        {
+          "name": "Dashboard - 7 Days",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/dashboard?period=7days",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "dashboard"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7days",
+                  "description": "Last 7 days dashboard summary"
+                }
+              ]
+            },
+            "description": "Get dashboard summary for last 7 days"
+          },
+          "response": []
+        },
+        {
+          "name": "Dashboard - Monthly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/dashboard?period=monthly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "dashboard"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly",
+                  "description": "Current month dashboard summary"
+                }
+              ]
+            },
+            "description": "Get dashboard summary for current month"
+          },
+          "response": []
+        },
+        {
+          "name": "Dashboard - Yearly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/dashboard?period=yearly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "dashboard"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "yearly",
+                  "description": "Current year dashboard summary"
+                }
+              ]
+            },
+            "description": "Get dashboard summary for current year"
+          },
+          "response": []
+        }
+      ],
+      "description": "Dashboard summary with quick stats, breakdowns, and recent orders"
+    },
+    {
+      "name": "Revenue Trends",
+      "item": [
+        {
+          "name": "Revenue Trends - Daily",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/revenue-trends?period=daily",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "revenue-trends"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "daily",
+                  "description": "Today's revenue trend"
+                }
+              ]
+            },
+            "description": "Get revenue trend for today"
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue Trends - 7 Days",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/revenue-trends?period=7days",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "revenue-trends"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7days",
+                  "description": "Last 7 days revenue trends"
+                }
+              ]
+            },
+            "description": "Get daily revenue trends for last 7 days"
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue Trends - Monthly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/revenue-trends?period=monthly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "revenue-trends"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly",
+                  "description": "Current month daily revenue trends"
+                }
+              ]
+            },
+            "description": "Get daily revenue trends for current month (30-31 days)"
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue Trends - Yearly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/revenue-trends?period=yearly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "revenue-trends"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "yearly",
+                  "description": "Current year monthly revenue trends"
+                }
+              ]
+            },
+            "description": "Get monthly revenue trends for current year (Jan-Dec)"
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue Trends - Custom 30 Days",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/revenue-trends?days=30",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "revenue-trends"],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30",
+                  "description": "Custom 30 days revenue trends"
+                }
+              ]
+            },
+            "description": "Get daily revenue trends for last 30 days"
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue Trends - Custom 90 Days",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/revenue-trends?days=90",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "revenue-trends"],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "90",
+                  "description": "Custom 90 days revenue trends (quarterly)"
+                }
+              ]
+            },
+            "description": "Get daily revenue trends for last 90 days (quarterly view)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Revenue trends with daily or monthly breakdown"
+    },
+    {
+      "name": "Category Sales",
+      "item": [
+        {
+          "name": "Category Sales - Today",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/category-sales?period=today",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "category-sales"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "today",
+                  "description": "Today's category sales"
+                }
+              ]
+            },
+            "description": "Get category-wise sales for today"
+          },
+          "response": []
+        },
+        {
+          "name": "Category Sales - 7 Days",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/category-sales?period=7days",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "category-sales"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7days",
+                  "description": "Last 7 days category sales"
+                }
+              ]
+            },
+            "description": "Get category-wise sales for last 7 days"
+          },
+          "response": []
+        },
+        {
+          "name": "Category Sales - Monthly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/category-sales?period=monthly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "category-sales"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly",
+                  "description": "Current month category sales"
+                }
+              ]
+            },
+            "description": "Get category-wise sales for current month"
+          },
+          "response": []
+        },
+        {
+          "name": "Category Sales - Yearly",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/category-sales?period=yearly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "category-sales"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "yearly",
+                  "description": "Current year category sales"
+                }
+              ]
+            },
+            "description": "Get category-wise sales for current year"
+          },
+          "response": []
+        }
+      ],
+      "description": "Category-wise sales analysis with quantity, revenue, and order count"
+    },
+    {
+      "name": "Generate Analytics",
+      "item": [
+        {
+          "name": "Generate Daily Analytics - Today",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2025-11-15\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/generate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "generate"]
+            },
+            "description": "Generate and save analytics for today (update date to current date)"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Daily Analytics - Specific Date",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2025-11-10\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/generate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "generate"]
+            },
+            "description": "Generate and save analytics for a specific date"
+          },
+          "response": []
+        }
+      ],
+      "description": "Generate and save daily analytics to database"
+    },
+    {
+      "name": "Testing Scenarios",
+      "item": [
+        {
+          "name": "Test - Franchise Admin Access",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics?period=monthly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly"
+                }
+              ]
+            },
+            "description": "Test with FRANCHISE_ADMIN token - should only see own franchise data"
+          },
+          "response": []
+        },
+        {
+          "name": "Test - Super Admin Access",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics?period=monthly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly"
+                }
+              ]
+            },
+            "description": "Test with SUPER_ADMIN token - should see all franchise data"
+          },
+          "response": []
+        },
+        {
+          "name": "Test - Compare Periods",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/analytics/revenue-trends?period=7days",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "analytics", "revenue-trends"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7days",
+                  "description": "Change to: daily, 7days, monthly, yearly"
+                }
+              ]
+            },
+            "description": "Test different periods to compare trends"
+          },
+          "response": []
+        }
+      ],
+      "description": "Testing scenarios for role-based access and different periods"
+    }
+  ]
+}

@@ -29,7 +29,6 @@ const analyticsSchema = new mongoose.Schema({
 });
 
 // Index for better query performance
-analyticsSchema.index({ franchiseId: 1 });
 analyticsSchema.index({ date: -1 });
 
 const Analytics = mongoose.model('Analytics', analyticsSchema);
