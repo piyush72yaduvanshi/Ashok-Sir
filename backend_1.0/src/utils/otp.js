@@ -1,14 +1,8 @@
-import twilio from "twilio";
+import axios from "axios";
 import crypto from "crypto";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
-
 
 export const generateOTP = () => {
   return crypto.randomInt(100000, 999999).toString();
@@ -19,29 +13,38 @@ export const otpExpiry = (minutes = 10) => {
   return new Date(Date.now() + minutes * 60 * 1000);
 };
 
-
 export const sendOTPSMS = async (mobileNo, otp) => {
   try {
-    if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN || !process.env.TWILIO_PHONE_NUMBER) {
-      throw new Error("Twilio credentials are missing in environment variables");
+    if (!process.env.FAST2SMS_API_KEY) {
+      throw new Error("FAST2SMS_API_KEY is missing in .env");
     }
-        const formattedNumber = mobileNo.startsWith("+")
-      ? mobileNo
-      : `+91${mobileNo}`;
 
-    const message = `Your verification code is ${otp}. It will expire in 10 minutes. Please do not share it with anyone.`;
+    const formattedNumber = mobileNo.startsWith("+91")
+      ? mobileNo.replace("+91", "")
+      : mobileNo;
 
-    const response = await client.messages.create({
-      body: message,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: formattedNumber,
-    });
+    const message = `Your verification code is ${otp}. It will expire in 10 minutes. Do not share it with anyone.`;
 
-    console.log(`✅ OTP sent successfully to ${mobileNo}: SID ${response.sid}`);
-    return { success: true, sid: response.sid };
+    const response = await axios.post(
+      "https://www.fast2sms.com/dev/bulkV2",
+      {
+        message: message,
+        route: "v3",
+        numbers: formattedNumber,
+      },
+      {
+        headers: {
+          authorization: process.env.FAST2SMS_API_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("✅ OTP sent successfully:", response.data);
+    return { success: true, data: response.data };
+
   } catch (error) {
-    console.error("❌ Error sending OTP:", error.message);
+    console.error("❌ Fast2SMS Error:", error.response?.data || error.message);
     return { success: false, error: "SMS sending failed" };
   }
 };
-

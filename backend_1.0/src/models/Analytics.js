@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const analyticsSchema = new mongoose.Schema({
-  franchiseId: {
+  analyticsBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Franchise',
+    ref: 'User',
     required: true
   },
   date: {
@@ -20,32 +20,10 @@ const analyticsSchema = new mongoose.Schema({
     required: true,
     min: 0
   },
-  totalExpenses: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  netProfit: {
-    type: Number,
-    required: true
-  },
-  grossProfit: {
-    type: Number,
-    required: true
-  },
-  averageOrderValue: {
-    type: Number,
-    required: true,
-    min: 0
-  },
   popularItems: {
     type: mongoose.Schema.Types.Mixed,
     required: true
   },
-  peakHours: {
-    type: mongoose.Schema.Types.Mixed,
-    required: true
-  }
 }, {
   timestamps: true
 });

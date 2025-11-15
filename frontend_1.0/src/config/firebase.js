@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA4I-4SaMem2A9cCL4YC31Cni3kkYKDeis",
@@ -11,4 +12,5 @@ const firebaseConfig = {
   databaseURL: "https://nbcbillingsystem-default-rtdb.firebaseio.com"
 };
 
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+export const storage = getStorage(app);
